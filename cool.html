@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="he">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>דירוג מצגת</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      color: #333;
+    }
+    .rating-btn {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      transition: background-color 0.2s;
+    }
+    .rating-btn:hover {
+      background-color: #45a049;
+    }
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>איך היית מדרג את המצגת? (1 עד 10)</h1>
+  <div id="buttons"></div>
+  <p id="message"></p>
+
+  <script>
+    const buttonsContainer = document.getElementById('buttons');
+    const message = document.getElementById('message');
+
+    // יוצרים את כפתורי הדירוג
+    for (let i = 1; i <= 10; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = 'rating-btn';
+      btn.onclick = () => sendRating(i);
+      buttonsContainer.appendChild(btn);
+    }
+
+    // פונקציה שמופעלת בלחיצה
+    function sendRating(rating) {
+      // מציג הודעת תודה במקום לשלוח לשרת
+      message.textContent = `תודה! דירגת ${rating}/10 ✅`;
+      message.style.color = 'green';
+    }
+  </script>
+</body>
+</html>
