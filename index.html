@@ -6,112 +6,111 @@
   <title>דירוג מצגת</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
-      text-align: center;
-      background: linear-gradient(to bottom right, #f9f9f9, #dce3f1);
-      padding: 50px;
+      background: linear-gradient(135deg, #b6e2ff, #e3f2fd);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       direction: rtl;
     }
-
-    .container {
-      background: #ffffff;
-      border-radius: 12px;
+    
+    .box {
+      background: white;
+      max-width: 350px;
+      width: 90%;
       padding: 30px;
-      width: 320px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin-bottom: 20px;
     }
 
     .rating {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 20px;
+      justify-content: center;
     }
 
     .rating button {
-      border: none;
-      border-radius: 6px;
+      flex: 1 0 20%;
       padding: 12px;
       font-size: 18px;
-      cursor: pointer;
-      transition: transform 0.2s ease, opacity 0.3s;
+      border-radius: 8px;
+      border: none;
       color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
 
     .rating button:hover {
       transform: scale(1.1);
-      opacity: 0.9;
     }
 
-    /* צבעים לכפתורים */
-    button.value-1, button.value-2, button.value-3 { background: #ff4d4d; }
-    button.value-4, button.value-5, button.value-6 { background: #ff9900; }
-    button.value-7, button.value-8, button.value-9 { background: #008000; }
-    button.value-10 { background: #57ff57; }
-
-    .selected-result {
-      font-size: 2rem;
-      margin-top: 30px;
-      animation: pop 0.6s ease forwards;
+    .result {
+      font-size: 2.2rem;
+      margin-top: 20px;
+      animation: pop 0.5s ease-out;
+      font-weight: bold;
     }
 
     @keyframes pop {
-      0% { transform: scale(0); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     .credit {
-      margin-top: 40px;
-      opacity: 0.5;
-      font-size: 0.8rem;
+      margin-top: 25px;
+      opacity: 0.4;
+      font-size: 0.9rem;
     }
+
+    /* צבעים לפי דירוג */
+    button[value="1"], button[value="2"], button[value="3"] { background: #ff4d4d; }
+    button[value="4"], button[value="5"], button[value="6"] { background: #ff9900; }
+    button[value="7"], button[value="8"], button[value="9"] { background: #18a558; }
+    button[value="10"] { background: #49ff49; }
   </style>
 </head>
 
 <body>
 
-  <div class="container" id="ratingBox">
-    <h1>דרג את המצגת</h1>
+  <div class="box" id="voteBox">
+    <h1>דרגו את המצגת</h1>
     <div class="rating">
-      <button class="value-1" onclick="pickRating(1)">1</button>
-      <button class="value-2" onclick="pickRating(2)">2</button>
-      <button class="value-3" onclick="pickRating(3)">3</button>
-      <button class="value-4" onclick="pickRating(4)">4</button>
-      <button class="value-5" onclick="pickRating(5)">5</button>
-      <button class="value-6" onclick="pickRating(6)">6</button>
-      <button class="value-7" onclick="pickRating(7)">7</button>
-      <button class="value-8" onclick="pickRating(8)">8</button>
-      <button class="value-9" onclick="pickRating(9)">9</button>
-      <button class="value-10" onclick="pickRating(10)">10</button>
+      <button value="1" onclick="pickRating(1)">1</button>
+      <button value="2" onclick="pickRating(2)">2</button>
+      <button value="3" onclick="pickRating(3)">3</button>
+      <button value="4" onclick="pickRating(4)">4</button>
+      <button value="5" onclick="pickRating(5)">5</button>
+      <button value="6" onclick="pickRating(6)">6</button>
+      <button value="7" onclick="pickRating(7)">7</button>
+      <button value="8" onclick="pickRating(8)">8</button>
+      <button value="9" onclick="pickRating(9)">9</button>
+      <button value="10" onclick="pickRating(10)">10</button>
     </div>
+    <p class="credit">נוצר על ידי יובל</p>
   </div>
-
-  <div id="result"></div>
-
-  <div class="credit">נוצר על ידי יובל</div>
 
   <script>
     function pickRating(num) {
-      document.getElementById("ratingBox").style.display = "none";
-      const resultDiv = document.getElementById("result");
-
-      let color;
-      if (num <= 3) color = "#ff4d4d";
-      else if (num <= 6) color = "#ff9900";
-      else if (num <= 9) color = "#008000";
-      else color = "#57ff57";
-
-      resultDiv.innerHTML = `
-        <div class="selected-result" style="color: ${color};">
-          תודה! הצבעת ${num}!
-        </div>
-      `;
+      const box = document.getElementById("voteBox");
+      box.innerHTML = `<div class="result">תודה! הצבעת <span style="color:${
+        num <= 3 ? '#ff4d4d' : num <= 6 ? '#ff9900' : num <= 9 ? '#18a558' : '#49ff49'
+      }">${num}</span>!</div>`;
     }
   </script>
 
