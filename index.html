@@ -1,64 +1,128 @@
-<!doctype html>
-<html lang="he">
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>דירוג מצגת</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דירוג מצגת עם אנימציה</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #f0f0ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
       text-align: center;
-      margin-top: 50px;
-      background-color: #f7f7f7;
     }
-    h1 {
-      color: #333;
-    }
-    .rating-btn {
-      padding: 10px 15px;
+    .rating button {
+      width: 45px;
+      height: 45px;
       margin: 5px;
-      font-size: 18px;
-      border-radius: 8px;
       border: none;
+      border-radius: 50%;
+      background: #eee;
+      font-size: 16px;
       cursor: pointer;
-      background-color: #4CAF50;
+      transition: 0.2s;
+    }
+    .rating button.selected {
+      background: #6a5acd;
       color: white;
-      transition: background-color 0.2s;
-    }
-    .rating-btn:hover {
-      background-color: #45a049;
-    }
-    #message {
-      margin-top: 20px;
       font-weight: bold;
-      color: #333;
+      transform: scale(1.2);
+    }
+    .rating button:hover {
+      background: #dcdcdc;
+    }
+    .submit-btn {
+      padding: 10px;
+      margin-top: 15px;
+      background: #6a5acd;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .submit-btn:hover {
+      background: #5949bc;
+    }
+    .message {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #6a5acd;
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <h1>איך היית מדרג את המצגת? (1 עד 10)</h1>
-  <div id="buttons"></div>
-  <p id="message"></p>
 
-  <script>
-    const buttonsContainer = document.getElementById('buttons');
-    const message = document.getElementById('message');
+<div class="container">
+  <h1>דירוג מצגת</h1>
+  <p>בחרו ציון מ-1 עד 10:</p>
+  
+  <div class="rating">
+    <!-- כפתורים 1 עד 10 -->
+    <script>
+      for (let i = 1; i <= 10; i++) {
+        document.write(`<button onclick="selectRating(${i}, event)">${i}</button>`);
+      }
+    </script>
+  </div>
 
-    // יוצרים את כפתורי הדירוג
-    for (let i = 1; i <= 10; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = i;
-      btn.className = 'rating-btn';
-      btn.onclick = () => sendRating(i);
-      buttonsContainer.appendChild(btn);
+  <button class="submit-btn" onclick="submitRating()">אישור</button>
+
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+  let selectedRating = null;
+
+  function selectRating(value, event) {
+    selectedRating = value;
+    const buttons = document.querySelectorAll('.rating button');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    
+    // הוספת אפקט קפיצה + סימון נבחר
+    const clickedButton = event.target;
+    clickedButton.classList.add('selected');
+    clickedButton.style.animation = "pop 0.3s ease";
+
+    // מנקים את האנימציה אחרי שסיימה
+    setTimeout(() => {
+      clickedButton.style.animation = "";
+    }, 300);
+  }
+
+  function submitRating() {
+    if (selectedRating !== null) {
+      document.getElementById('message').innerText =
+        `${selectedRating} ⭐\nתודה! ההצבעה התקבלה!`;
+    } else {
+      alert("אנא בחרו ציון לפני האישור.");
     }
+  }
+</script>
 
-    // פונקציה שמופעלת בלחיצה
-    function sendRating(rating) {
-      // מציג הודעת תודה במקום לשלוח לשרת
-      message.textContent = `תודה! דירגת ${rating}/10 ✅`;
-      message.style.color = 'green';
-    }
-  </script>
 </body>
 </html>
